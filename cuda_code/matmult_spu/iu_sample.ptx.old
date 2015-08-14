@@ -1,0 +1,317 @@
+	mov.s32 	%r7, 0;
+	mov.s32 	%r8, %r7;
+	mov.s32 	%r9, 0;
+	mov.s32 	%r10, %r9;
+	ld.param.s32 	%r11, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__N];
+	shr.s32 	%r12, %r11, 31;
+	mov.s32 	%r13, 15;
+	and.b32 	%r14, %r12, %r13;
+	add.s32 	%r15, %r14, %r11;
+	shr.s32 	%r16, %r15, 4;
+	mov.s32 	%r17, %r16;
+	mov.s32 	%r18, %r17;
+	cvt.u32.u16 	%r19, %nctaid.x;
+	cvt.u32.u16 	%r20, %nctaid.y;
+	add.u32 	%r21, %r19, %r20;
+	add.u32 	%r22, %r18, %r21;
+	sub.u32 	%r23, %r22, 1;
+	mov.s32 	%r24, %r23;
+	cvt.u32.u16 	%r25, %ctaid.x;
+	cvt.u32.u16 	%r26, %ctaid.y;
+	add.u32 	%r27, %r25, %r26;
+	add.u32 	%r28, %r27, 1;
+	mov.s32 	%r29, %r28;
+	mov.f32 	%f1, 0f00000000;     	
+	// 0
+	mov.f32 	%f2, %f1;
+	
+	// iu is r6
+	mov.s32 	%r30, %regiu;
+	mov.u32 	%r31, 0;
+	setp.eq.s32 	%p1, %r30, %r31;
+	@%p1 bra 	$L_0_7426;
+	
+	// iudir is r2
+	mov.s32 	%r32, %regiudir;
+	mov.u32 	%r33, 2;
+	setp.ne.s32 	%p2, %r32, %r33;
+	@%p2 bra 	$L_0_7682;
+	
+	// iuid is r4
+	mov.s32 	%r34, %regiuid;
+	mul.lo.s32 	%r35, %r34, 16;
+	mov.s32 	%r36, %r35;
+$L_0_7682:
+	
+	// iudir
+	mov.s32 	%r37, %riudir;
+	mov.u32 	%r38, 0;
+	setp.ne.s32 	%p3, %r37, %r38;
+	@%p3 bra 	$L_0_7938;
+	
+	// iuid
+	mov.s32 	%r39, %riuid;
+	mul.lo.s32 	%r40, %r39, 16;
+	mov.s32 	%r41, %r40;
+$L_0_7938:
+	bra.uni 	$L_0_7170;
+$L_0_7426:
+	cvt.u32.u16 	%r42, %ctaid.y;
+	mul.lo.u32 	%r43, %r42, 16;
+	mov.s32 	%r36, %r43;
+	cvt.u32.u16 	%r44, %ctaid.x;
+	mul.lo.u32 	%r45, %r44, 16;
+	mov.s32 	%r41, %r45;
+$L_0_7170:
+	mov.s32 	%r46, 0;
+	mov.s32 	%r8, %r46;
+	mov.s32 	%r47, 0;
+	mov.s32 	%r48, %r47;
+	mov.s32 	%r49, %r24;
+	mov.s32 	%r50, %r48;
+	setp.le.s32 	%p4, %r49, %r50;
+	@%p4 bra 	$L_0_8450;
+$L_0_8194:
+	mov.s32 	%r51, %r8;
+	mul.lo.s32 	%r52, %r51, 16;
+	mov.s32 	%r53, %r52;
+	mov.s32 	%r54, %r53;
+	mov.s32 	%r55, %r54;
+	
+	// iu
+	mov.s32 	%r56, %regiu;
+	mov.u32 	%r57, 0;
+	setp.eq.s32 	%p5, %r56, %r57;
+	@%p5 bra 	$L_0_8962;
+	
+	// iudir
+	mov.s32 	%r58, %regiudir;
+	mov.u32 	%r59, 2;
+	setp.ne.s32 	%p6, %r58, %r59;
+	@%p6 bra 	$L_0_9218;
+	
+	// iuid
+	mov.s32 	%r60, %regiuid;
+	mov.s32 	%r61, %r48;
+	set.le.u32.s32 	%r62, %r60, %r61;
+	neg.s32 	%r63, %r62;
+	mov.s32 	%r64, %r8;
+	mov.s32 	%r65, %r17;
+	set.lt.u32.s32 	%r66, %r64, %r65;
+	neg.s32 	%r67, %r66;
+	and.b32 	%r68, %r63, %r67;
+	mov.u32 	%r69, 0;
+	setp.eq.s32 	%p7, %r68, %r69;
+	@%p7 bra 	$L_0_9474;
+	ld.param.u64 	%rd1, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__A];
+	mov.s32 	%r70, %r53;
+	cvt.u32.u16 	%r71, %tid.x;
+	add.u32 	%r72, %r70, %r71;
+	ld.param.u32 	%r73, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__N];
+	mov.s32 	%r74, %r36;
+	cvt.u32.u16 	%r75, %tid.y;
+	add.u32 	%r76, %r74, %r75;
+	mul.lo.u32 	%r77, %r73, %r76;
+	add.u32 	%r78, %r72, %r77;
+	cvt.u64.u32 	%rd2, %r78;
+	mul.wide.u32 	%rd3, %r78, 4;
+	add.u64 	%rd4, %rd1, %rd3;
+	ld.global.f32 	%f3, [%rd4+0];
+	mov.u64 	%rd5, __cuda___cuda_local_var_28066_32_non_const_cb_A3112;
+	cvt.u32.u16 	%r79, %tid.x;
+	cvt.u64.u32 	%rd6, %r79;
+	cvt.u32.u16 	%r80, %tid.y;
+	cvt.u64.u32 	%rd7, %r80;
+	mul.wide.u32 	%rd8, %r80, 16;
+	add.u64 	%rd9, %rd6, %rd8;
+	mul.lo.u64 	%rd10, %rd9, 4;
+	add.u64 	%rd11, %rd5, %rd10;
+	st.cbh.f32 	[%rd11+0], %f3;
+	mov.s32 	%r81, %r8;
+	add.s32 	%r82, %r81, 1;
+	mov.s32 	%r8, %r82;
+$L_0_9474:
+$L_0_9218:
+	
+	// iudir
+	mov.s32 	%r83, %regiudir;
+	mov.u32 	%r84, 0;
+	setp.ne.s32 	%p8, %r83, %r84;
+	@%p8 bra 	$L_0_9730;
+	
+	// iuid
+	mov.s32 	%r85, %riuid;
+	mov.s32 	%r86, %r48;
+	set.le.u32.s32 	%r87, %r85, %r86;
+	neg.s32 	%r88, %r87;
+	mov.s32 	%r89, %r8;
+	mov.s32 	%r90, %r17;
+	set.lt.u32.s32 	%r91, %r89, %r90;
+	neg.s32 	%r92, %r91;
+	and.b32 	%r93, %r88, %r92;
+	mov.u32 	%r94, 0;
+	setp.eq.s32 	%p9, %r93, %r94;
+	@%p9 bra 	$L_0_9986;
+	ld.param.u64 	%rd12, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__B];
+	mov.s32 	%r95, %r41;
+	cvt.u32.u16 	%r96, %tid.x;
+	add.u32 	%r97, %r95, %r96;
+	ld.param.u32 	%r98, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__N];
+	mov.s32 	%r99, %r55;
+	cvt.u32.u16 	%r100, %tid.y;
+	add.u32 	%r101, %r99, %r100;
+	mul.lo.u32 	%r102, %r98, %r101;
+	add.u32 	%r103, %r97, %r102;
+	cvt.u64.u32 	%rd13, %r103;
+	mul.wide.u32 	%rd14, %r103, 4;
+	add.u64 	%rd15, %rd12, %rd14;
+	ld.global.f32 	%f4, [%rd15+0];
+	mov.u64 	%rd16, __cuda___cuda_local_var_28061_32_non_const_cb_B5160;
+	cvt.u32.u16 	%r104, %tid.x;
+	cvt.u64.u32 	%rd17, %r104;
+	cvt.u32.u16 	%r105, %tid.y;
+	cvt.u64.u32 	%rd18, %r105;
+	mul.wide.u32 	%rd19, %r105, 16;
+	add.u64 	%rd20, %rd17, %rd19;
+	mul.lo.u64 	%rd21, %rd20, 4;
+	add.u64 	%rd22, %rd16, %rd21;
+	st.cbv.f32 	[%rd22+0], %f4;
+	mov.s32 	%r106, %r8;
+	add.s32 	%r107, %r106, 1;
+	mov.s32 	%r8, %r107;
+$L_0_9986:
+$L_0_9730:
+	bra.uni 	$L_0_8706;
+$L_0_8962:
+	mov.s32 	%r108, %r29;
+	mov.s32 	%r109, %r48;
+	set.le.u32.s32 	%r110, %r108, %r109;
+	neg.s32 	%r111, %r110;
+	mov.s32 	%r112, %r8;
+	mov.s32 	%r113, %r17;
+	set.lt.u32.s32 	%r114, %r112, %r113;
+	neg.s32 	%r115, %r114;
+	and.b32 	%r116, %r111, %r115;
+	mov.u32 	%r117, 0;
+	setp.eq.s32 	%p10, %r116, %r117;
+	@%p10 bra 	$L_0_10242;
+	mov.s32 	%r118, 0;
+	mov.s32 	%r10, %r118;
+	mov.s32 	%r119, %r10;
+	mov.u32 	%r120, 15;
+	setp.gt.s32 	%p11, %r119, %r120;
+	@%p11 bra 	$L_0_10754;
+$L_0_10498:
+	mov.f32 	%f5, %f2;
+	mov.u64 	%rd23, __cuda___cuda_local_var_28066_32_non_const_cb_A3112;
+	mov.s32 	%r121, %r10;
+	cvt.s64.s32 	%rd24, %r121;
+	cvt.u32.u16 	%r122, %tid.y;
+	cvt.u64.u32 	%rd25, %r122;
+	mul.wide.u32 	%rd26, %r122, 16;
+	add.u64 	%rd27, %rd24, %rd26;
+	mul.lo.u64 	%rd28, %rd27, 4;
+	add.u64 	%rd29, %rd23, %rd28;
+	ld.cbh.f32 	%f6, [%rd29+0];
+	mov.u64 	%rd30, __cuda___cuda_local_var_28061_32_non_const_cb_B5160;
+	cvt.u32.u16 	%r123, %tid.x;
+	cvt.u64.u32 	%rd31, %r123;
+	mov.s32 	%r124, %r10;
+	cvt.s64.s32 	%rd32, %r124;
+	mul.wide.s32 	%rd33, %r124, 16;
+	add.u64 	%rd34, %rd31, %rd33;
+	mul.lo.u64 	%rd35, %rd34, 4;
+	add.u64 	%rd36, %rd30, %rd35;
+	ld.cbv.f32 	%f7, [%rd36+0];
+	mad.f32 	%f8, %f6, %f7, %f5;
+	mov.f32 	%f2, %f8;
+	mov.s32 	%r125, %r10;
+	add.s32 	%r126, %r125, 1;
+	mov.s32 	%r10, %r126;
+	mov.s32 	%r127, %r10;
+	mov.u32 	%r128, 15;
+	setp.le.s32 	%p12, %r127, %r128;
+	@%p12 bra 	$L_0_10498;
+$L_0_10754:
+	bar.sync 	0;
+	mov.u64 	%rd37, __cuda___cuda_local_var_28066_32_non_const_cb_A3112;
+	cvt.u32.u16 	%r129, %tid.x;
+	cvt.u64.u32 	%rd38, %r129;
+	cvt.u32.u16 	%r130, %tid.y;
+	cvt.u64.u32 	%rd39, %r130;
+	mul.wide.u32 	%rd40, %r130, 16;
+	add.u64 	%rd41, %rd38, %rd40;
+	mul.lo.u64 	%rd42, %rd41, 4;
+	add.u64 	%rd43, %rd37, %rd42;
+	ld.cbh.f32 	%f9, [%rd43+0];
+	mov.u64 	%rd44, __cuda___cuda_local_var_28066_32_non_const_cb_A3112;
+	cvt.u32.u16 	%r131, %tid.x;
+	cvt.u64.u32 	%rd45, %r131;
+	cvt.u32.u16 	%r132, %tid.y;
+	cvt.u64.u32 	%rd46, %r132;
+	mul.wide.u32 	%rd47, %r132, 16;
+	add.u64 	%rd48, %rd45, %rd47;
+	mul.lo.u64 	%rd49, %rd48, 4;
+	add.u64 	%rd50, %rd44, %rd49;
+	st.cbh.f32 	[%rd50+0], %f9;
+	mov.u64 	%rd51, __cuda___cuda_local_var_28061_32_non_const_cb_B5160;
+	cvt.u32.u16 	%r133, %tid.x;
+	cvt.u64.u32 	%rd52, %r133;
+	cvt.u32.u16 	%r134, %tid.y;
+	cvt.u64.u32 	%rd53, %r134;
+	mul.wide.u32 	%rd54, %r134, 16;
+	add.u64 	%rd55, %rd52, %rd54;
+	mul.lo.u64 	%rd56, %rd55, 4;
+	add.u64 	%rd57, %rd51, %rd56;
+	ld.cbv.f32 	%f10, [%rd57+0];
+	mov.u64 	%rd58, __cuda___cuda_local_var_28061_32_non_const_cb_B5160;
+	cvt.u32.u16 	%r135, %tid.x;
+	cvt.u64.u32 	%rd59, %r135;
+	cvt.u32.u16 	%r136, %tid.y;
+	cvt.u64.u32 	%rd60, %r136;
+	mul.wide.u32 	%rd61, %r136, 16;
+	add.u64 	%rd62, %rd59, %rd61;
+	mul.lo.u64 	%rd63, %rd62, 4;
+	add.u64 	%rd64, %rd58, %rd63;
+	st.cbv.f32 	[%rd64+0], %f10;
+	mov.s32 	%r137, %r8;
+	add.s32 	%r138, %r137, 1;
+	mov.s32 	%r8, %r138;
+$L_0_10242:
+$L_0_8706:
+	bar.blocksync	0;
+	mov.s32 	%r139, %r48;
+	add.s32 	%r140, %r139, 1;
+	mov.s32 	%r48, %r140;
+	mov.s32 	%r141, %r24;
+	mov.s32 	%r142, %r48;
+	setp.gt.s32 	%p13, %r141, %r142;
+	@%p13 bra 	$L_0_8194;
+$L_0_8450:
+	
+	// iu
+	mov.s32 	%r143, %regiu;
+	mov.u32 	%r144, 0;
+	setp.ne.s32 	%p14, %r143, %r144;
+	@%p14 bra 	$L_0_11010;
+	mov.f32 	%f11, %f2;
+	ld.param.u64 	%rd65, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__C];
+	mov.s32 	%r145, %r41;
+	cvt.u32.u16 	%r146, %tid.x;
+	add.u32 	%r147, %r145, %r146;
+	ld.param.u32 	%r148, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__N];
+	mov.s32 	%r149, %r36;
+	cvt.u32.u16 	%r150, %tid.y;
+	add.u32 	%r151, %r149, %r150;
+	mul.lo.u32 	%r152, %r148, %r151;
+	add.u32 	%r153, %r147, %r152;
+	cvt.u64.u32 	%rd66, %r153;
+	mul.wide.u32 	%rd67, %r153, 4;
+	add.u64 	%rd68, %rd65, %rd67;
+	st.global.f32 	[%rd68+0], %f11;
+$L_0_11010:
+	exit;
+$LDWend__Z12MatMulKernelPfS_S_i:
+	} 
+	// _Z12MatMulKernelPfS_S_i
+

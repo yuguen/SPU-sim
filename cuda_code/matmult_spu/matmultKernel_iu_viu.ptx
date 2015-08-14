@@ -1,0 +1,840 @@
+	.version 1.4
+	.target sm_10, map_f64_to_f32
+	// compiled with /usr/local/cuda/open64/lib//be
+	// nvopencc 4.0 built on 2011-05-12
+
+	//-----------------------------------------------------------
+	// Compiling /tmp/tmpxft_00002c3f_00000000-9_matmultKernel_iu.cpp3.i (/tmp/ccBI#.vm7SMc)
+	//-----------------------------------------------------------
+
+	//-----------------------------------------------------------
+	// Options:
+	//-----------------------------------------------------------
+	//  Target:ptx, ISA:sm_10, Endian:little, Pointer Size:64
+	//  -O0	(Optimization level)
+	//  -g0	(Debug level)
+	//  -m2	(Report advisories)
+	//-----------------------------------------------------------
+
+
+
+	.entry _Z11matMultiplyPfS_S_iiPiS_ (
+		.param .u64 __cudaparm__Z11matMultiplyPfS_S_iiPiS__A,
+		.param .u64 __cudaparm__Z11matMultiplyPfS_S_iiPiS__B,
+		.param .u64 __cudaparm__Z11matMultiplyPfS_S_iiPiS__C,
+		.param .s32 __cudaparm__Z11matMultiplyPfS_S_iiPiS__N,
+		.param .s32 __cudaparm__Z11matMultiplyPfS_S_iiPiS__b,
+		.param .u64 __cudaparm__Z11matMultiplyPfS_S_iiPiS__blk_start,
+		.param .u64 __cudaparm__Z11matMultiplyPfS_S_iiPiS__g_CB)
+	{
+	.reg .u32 %r<202>;
+	.reg .u64 %rd<126>;
+	.reg .f32 %f<14>;
+	.reg .pred %p<18>;
+	.shared .align 4 .b8 __cuda___cuda_local_var_28058_32_non_const_s_C40[1024];
+	.shared .align 4 .b8 __cuda___cuda_local_var_28056_32_non_const_s_A4136[1024];
+	.shared .align 4 .b8 __cuda___cuda_local_var_28057_32_non_const_s_B6184[1024];
+	
+
+	.cbh .align 4 .b8 __cuda___cuda_local_var_28066_32_non_const_cb_A3112[1024];
+	.cbv .align 4 .b8 __cuda___cuda_local_var_28061_32_non_const_cb_B5160[1024];
+
+$LDWbegin__Z11matMultiplyPfS_S_iiPiS_:
+	// Will be registers
+	//r1 is Virtual IU
+	//r3 is iu_dir
+	//r5 is iu_id
+	//r7 is Passx
+	//r9 is CPassx
+	//r11 CPassy
+	//r13 is spillNB
+	//r15 is CspillNB
+	//r17 is LAST
+	// rd2 and rd4 are @0 pointers
+
+	// mov.s32 	%r2, %regviriu;
+	// mov.s32 	%r4, %regiudir;
+	// mov.s32 	%r6, %regiuid;
+	// mov.s32 	%r8, %regpassx;
+	// mov.s32 	%r10, %regcpassx;
+	// mov.s32 	%r12, %regcpassy;
+	// mov.s32 	%r14, %regspillnb;
+	// mov.s32 	%r16, %regcspillnb;
+	// mov.s32 	%r18, %reglast;
+	
+	// shared float
+	// pointer to shared float
+	mov.s64 	%rd2, 0;
+	// pointer to shared float
+	mov.s64 	%rd4, 0;
+	// This is the code
+	// THIS IS CB_SIZE
+	mov.s32 	%r19, 1024;
+	mov.s32 	%r20, %r19;
+	mov.s32 	%r21, %r20;
+	mul.lo.s32 	%r22, %r21, 4;
+	mov.s32 	%r23, %r22;
+	// If virtual_IU
+	mov.s32 	%r24, %regviriu;
+	mov.u32 	%r25, 0;
+	setp.eq.s32 	%p1, %r24, %r25;
+	@%p1 bra 	$L_0_6914;
+	mov.s32 	%r26, %r20;
+	cvt.u32.u16 	%r27, %ntid.x;
+	cvt.u32.u16 	%r28, %ntid.y;
+	mul.lo.u32 	%r29, %r27, %r28;
+	div.u32 	%r30, %r26, %r29;
+	mov.s32 	%r31, %r30;
+	mov.s32 	%r32, %r31;
+	cvt.u32.u16 	%r33, %tid.x;
+	cvt.u32.u16 	%r34, %ntid.x;
+	cvt.u32.u16 	%r35, %tid.y;
+	mul.lo.u32 	%r36, %r34, %r35;
+	add.u32 	%r37, %r33, %r36;
+	mul.lo.u32 	%r38, %r32, %r37;
+	mov.s32 	%r39, %r38;
+	// if iu_dir = N || W
+	mov.s32 	%r40, %regiudir;
+	mov.s32 	%r41, 0;
+	set.eq.u32.s32 	%r42, %r40, %r41;
+	neg.s32 	%r43, %r42;
+	mov.s32 	%r44, %regiudir;
+	mov.s32 	%r45, 2;
+	set.eq.u32.s32 	%r46, %r44, %r45;
+	neg.s32 	%r47, %r46;
+	or.b32 	%r48, %r43, %r47;
+	mov.u32 	%r49, 0;
+	setp.eq.s32 	%p2, %r48, %r49;
+	@%p2 bra 	$L_0_7427;
+	mov.s32 	%r50, 0;
+	mov.s32 	%r51, 1;
+	setp.ne.s32 	%p3, %r51, %r50;
+	@!%p3 bra.uni 	$L_0_7939;
+$L_0_7683:
+	// if iu_dir = N
+	mov.s32 	%r52, %regiudir;
+	mov.u32 	%r53, 0;
+	setp.ne.s32 	%p4, %r52, %r53;
+	@%p4 bra 	$L_0_8451;
+	mov.s32 	%r54, 0;
+	mov.s32 	%r55, %r54;
+	mov.s32 	%r56, %r31;
+	mov.s32 	%r57, %r55;
+	setp.le.s32 	%p5, %r56, %r57;
+	@%p5 bra 	$L_0_8963;
+$L_0_8707:
+	// Store to CBV
+	ld.param.u64 	%rd5, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__g_CB];
+	mov.s32 	%r58, %r55;
+	mov.s32 	%r59, %r39;
+	mov.s32 	%r60, %regiuid;
+	mov.s32 	%r61, %r20;
+	mul.lo.s32 	%r62, %r60, %r61;
+	mov.s32 	%r63, %regspillnb;
+	mov.s32 	%r64, %r23;
+	mov.s32 	%r65, %regcpassx;
+	mov.s32 	%r66, %regpassx;
+	mov.s32 	%r67, %regcpassy;
+	sub.s32 	%r68, %r67, 1;
+	mul.lo.s32 	%r69, %r66, %r68;
+	add.s32 	%r70, %r65, %r69;
+	mul.lo.s32 	%r71, %r64, %r70;
+	mul.lo.s32 	%r72, %r63, %r71;
+	mov.s32 	%r73, %regcspillnb;
+	mov.s32 	%r74, %r23;
+	mul.lo.s32 	%r75, %r73, %r74;
+	add.s32 	%r76, %r72, %r75;
+	mul.lo.s32 	%r77, %r76, 2;
+	add.s32 	%r78, %r62, %r77;
+	add.s32 	%r79, %r59, %r78;
+	add.s32 	%r80, %r58, %r79;
+	cvt.s64.s32 	%rd6, %r80;
+	mul.wide.s32 	%rd7, %r80, 4;
+	add.u64 	%rd8, %rd5, %rd7;
+	ld.global.f32 	%f1, [%rd8+0];
+	mov.s64 	%rd9, %rd2;
+	mov.s32 	%r81, %r39;
+	mov.s32 	%r82, %r55;
+	add.s32 	%r83, %r81, %r82;
+	cvt.s64.s32 	%rd10, %r83;
+	mul.wide.s32 	%rd11, %r83, 4;
+	add.u64 	%rd12, %rd9, %rd11;
+	st.cbv.f32 	[%rd12+0], %f1;
+	mov.s32 	%r84, %r55;
+	add.s32 	%r85, %r84, 1;
+	mov.s32 	%r55, %r85;
+	mov.s32 	%r86, %r31;
+	mov.s32 	%r87, %r55;
+	setp.gt.s32 	%p6, %r86, %r87;
+	@%p6 bra 	$L_0_8707;
+$L_0_8963:
+	bra.uni 	$L_0_8195;
+$L_0_8451:
+	// inside else iu_dir = W
+	mov.s32 	%r88, 0;
+	mov.s32 	%r89, %r88;
+	mov.s32 	%r90, %r31;
+	mov.s32 	%r91, %r89;
+	setp.le.s32 	%p7, %r90, %r91;
+	@%p7 bra 	$L_0_9475;
+$L_0_9219:
+	// Store to CBH
+	ld.param.u64 	%rd13, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__g_CB];
+	mov.s32 	%r92, %r89;
+	mov.s32 	%r93, %r39;
+	mov.s32 	%r94, %r23;
+	mov.s32 	%r95, %regspillnb;
+	mov.s32 	%r96, %r23;
+	mov.s32 	%r97, %regcpassx;
+	mov.s32 	%r98, %regpassx;
+	mov.s32 	%r99, %regcpassy;
+	mul.lo.s32 	%r100, %r98, %r99;
+	add.s32 	%r101, %r97, %r100;
+	mul.lo.s32 	%r102, %r101, 2;
+	sub.s32 	%r103, %r102, 2;
+	mul.lo.s32 	%r104, %r96, %r103;
+	mul.lo.s32 	%r105, %r95, %r104;
+	mov.s32 	%r106, %regcspillnb;
+	mov.s32 	%r107, %r23;
+	mul.lo.s32 	%r108, %r106, %r107;
+	mul.lo.s32 	%r109, %r108, 2;
+	add.s32 	%r110, %r105, %r109;
+	add.s32 	%r111, %r94, %r110;
+	mov.s32 	%r112, %regiuid;
+	mov.s32 	%r113, %r20;
+	mul.lo.s32 	%r114, %r112, %r113;
+	add.s32 	%r115, %r111, %r114;
+	add.s32 	%r116, %r93, %r115;
+	add.s32 	%r117, %r92, %r116;
+	cvt.s64.s32 	%rd14, %r117;
+	mul.wide.s32 	%rd15, %r117, 4;
+	add.u64 	%rd16, %rd13, %rd15;
+	ld.global.f32 	%f2, [%rd16+0];
+	mov.s64 	%rd17, %rd4;
+	mov.s32 	%r118, %r39;
+	mov.s32 	%r119, %r89;
+	add.s32 	%r120, %r118, %r119;
+	cvt.s64.s32 	%rd18, %r120;
+	mul.wide.s32 	%rd19, %r120, 4;
+	add.u64 	%rd20, %rd17, %rd19;
+	st.cbh.f32 	[%rd20+0], %f2;
+	mov.s32 	%r121, %r89;
+	add.s32 	%r122, %r121, 1;
+	mov.s32 	%r89, %r122;
+	mov.s32 	%r123, %r31;
+	mov.s32 	%r124, %r89;
+	setp.gt.s32 	%p8, %r123, %r124;
+	@%p8 bra 	$L_0_9219;
+$L_0_9475:
+$L_0_8195:
+	bar.blocksync	0;
+	// if Last
+	mov.s32 	%r125, %reglast;
+	mov.u32 	%r126, 0;
+	setp.ne.s32 	%p9, %r125, %r126;
+	@%p9 bra 	$Lt_0_258;
+	bra.uni 	$L_0_7683;
+$L_0_7939:
+$Lt_0_258:
+	bra.uni 	$L_0_7171;
+$L_0_7427:
+	// inside esle iu_dir = S || E
+	mov.s32 	%r127, 0;
+	mov.s32 	%r128, 1;
+	setp.ne.s32 	%p10, %r128, %r127;
+	@!%p10 bra.uni 	$L_0_9987;
+$L_0_9731:
+	bar.blocksync	0;
+	// if iu_dir = S
+	mov.s32 	%r129, %regiudir;
+	mov.u32 	%r130, 3;
+	setp.ne.s32 	%p11, %r129, %r130;
+	@%p11 bra 	$L_0_10499;
+	mov.s32 	%r131, 0;
+	mov.s32 	%r132, %r131;
+	mov.s32 	%r133, %r31;
+	mov.s32 	%r134, %r132;
+	setp.le.s32 	%p12, %r133, %r134;
+	@%p12 bra 	$L_0_11011;
+$L_0_10755:
+//	Load from CBV
+	mov.s64 	%rd21, %rd2;
+	mov.s32 	%r135, %r39;
+	mov.s32 	%r136, %r132;
+	add.s32 	%r137, %r135, %r136;
+	cvt.s64.s32 	%rd22, %r137;
+	mul.wide.s32 	%rd23, %r137, 4;
+	add.u64 	%rd24, %rd21, %rd23;
+	ld.cbv.f32 	%f3, [%rd24+0];
+	ld.param.u64 	%rd25, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__g_CB];
+	mov.s32 	%r138, %r132;
+	mov.s32 	%r139, %r39;
+	mov.s32 	%r140, %regiuid;
+	mov.s32 	%r141, %r20;
+	mul.lo.s32 	%r142, %r140, %r141;
+	mov.s32 	%r143, %regspillnb;
+	mov.s32 	%r144, %r23;
+	mov.s32 	%r145, %regcpassx;
+	mov.s32 	%r146, %regpassx;
+	mov.s32 	%r147, %regcpassy;
+	mul.lo.s32 	%r148, %r146, %r147;
+	add.s32 	%r149, %r145, %r148;
+	mul.lo.s32 	%r150, %r144, %r149;
+	mul.lo.s32 	%r151, %r143, %r150;
+	mov.s32 	%r152, %regcspillnb;
+	sub.s32 	%r152, %r152, 1;
+	mov.s32 	%r153, %r23;
+	mul.lo.s32 	%r154, %r152, %r153;
+	add.s32 	%r155, %r151, %r154;
+	mul.lo.s32 	%r156, %r155, 2;
+	add.s32 	%r157, %r142, %r156;
+	add.s32 	%r158, %r139, %r157;
+	add.s32 	%r159, %r138, %r158;
+	cvt.s64.s32 	%rd26, %r159;
+	mul.wide.s32 	%rd27, %r159, 4;
+	add.u64 	%rd28, %rd25, %rd27;
+	st.global.f32 	[%rd28+0], %f3;
+	mov.s32 	%r160, %r132;
+	add.s32 	%r161, %r160, 1;
+	mov.s32 	%r132, %r161;
+	mov.s32 	%r162, %r31;
+	mov.s32 	%r163, %r132;
+	setp.gt.s32 	%p13, %r162, %r163;
+	@%p13 bra 	$L_0_10755;
+$L_0_11011:
+	bra.uni 	$L_0_10243;
+$L_0_10499:
+	// inside esle iu_dir = E
+	mov.s32 	%r164, 0;
+	mov.s32 	%r165, %r164;
+	mov.s32 	%r166, %r31;
+	mov.s32 	%r167, %r165;
+	setp.le.s32 	%p14, %r166, %r167;
+	@%p14 bra 	$L_0_11522;
+$L_0_11266:
+//	Load from CBH
+	mov.s64 	%rd29, %rd4;
+	mov.s32 	%r168, %r39;
+	mov.s32 	%r169, %r165;
+	add.s32 	%r170, %r168, %r169;
+	cvt.s64.s32 	%rd30, %r170;
+	mul.wide.s32 	%rd31, %r170, 4;
+	add.u64 	%rd32, %rd29, %rd31;
+	ld.cbh.f32 	%f4, [%rd32+0];
+	ld.param.u64 	%rd33, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__g_CB];
+	mov.s32 	%r171, %r165;
+	mov.s32 	%r172, %r39;
+	mov.s32 	%r173, %r23;
+	mov.s32 	%r174, %regiuid;
+	mov.s32 	%r175, %r20;
+	mul.lo.s32 	%r176, %r174, %r175;
+	mov.s32 	%r177, %regspillnb;
+	mov.s32 	%r178, %r23;
+	mov.s32 	%r179, %regcpassx;
+	mov.s32 	%r180, %regpassx;
+	mov.s32 	%r181, %regcpassy;
+	mul.lo.s32 	%r182, %r180, %r181;
+	add.s32 	%r183, %r179, %r182;
+	mul.lo.s32 	%r184, %r178, %r183;
+	mul.lo.s32 	%r185, %r177, %r184;
+	mov.s32 	%r186, %regcspillnb;
+	sub.s32 	%r186, %r186, 1;
+	mov.s32 	%r187, %r23;
+	mul.lo.s32 	%r188, %r186, %r187;
+	add.s32 	%r189, %r185, %r188;
+	mul.lo.s32 	%r190, %r189, 2;
+	add.s32 	%r191, %r176, %r190;
+	add.s32 	%r192, %r173, %r191;
+	add.s32 	%r193, %r172, %r192;
+	add.s32 	%r194, %r171, %r193;
+	cvt.s64.s32 	%rd34, %r194;
+	mul.wide.s32 	%rd35, %r194, 4;
+	add.u64 	%rd36, %rd33, %rd35;
+	st.global.f32 	[%rd36+0], %f4;
+	mov.s32 	%r195, %r165;
+	add.s32 	%r196, %r195, 1;
+	mov.s32 	%r165, %r196;
+	mov.s32 	%r197, %r31;
+	mov.s32 	%r198, %r165;
+	setp.gt.s32 	%p15, %r197, %r198;
+	@%p15 bra 	$L_0_11266;
+$L_0_11522:
+$L_0_10243:
+//	if Last
+	mov.s32 	%r199, %reglast;
+	mov.u32 	%r200, 0;
+	setp.ne.s32 	%p16, %r199, %r200;
+	@%p16 bra 	$Lt_0_514;
+	bra.uni 	$L_0_9731;
+$L_0_9987:
+$Lt_0_514:
+$L_0_7171:
+	bra.uni 	$L_0_6658;
+$L_0_6914:
+	// NORMAL CODE
+	// r2 is regiu
+	// r4 is regiudir
+	// r6 is regiuid
+	// r8 is NORTH
+	// r10 is WEST
+	// r11 is TILE_SIZE
+	
+
+	// r17 iters
+	
+	ld.param.s32 	%r11, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__N];
+	shr.s32 	%r12, %r11, 31;
+	mov.s32 	%r13, 15;
+	and.b32 	%r14, %r12, %r13;
+	add.s32 	%r15, %r14, %r11;
+	shr.s32 	%r16, %r15, 4;
+	mov.s32 	%r17, %r16;
+
+	
+	// r24 is num_timeSteps
+	
+	mov.s32 	%r18, %r17;
+	cvt.u32.u16 	%r19, %nctaid.x;
+	cvt.u32.u16 	%r20, %nctaid.y;
+	add.u32 	%r21, %r19, %r20;
+	add.u32 	%r22, %r18, %r21;
+	sub.u32 	%r23, %r22, 1;
+	mov.s32 	%r24, %r23;
+	
+
+	// r29 is start_timeStep
+ 
+	cvt.u32.u16 	%r25, %ctaid.x;
+	cvt.u32.u16 	%r26, %ctaid.y;
+	add.u32 	%r27, %r25, %r26;
+	add.u32 	%r28, %r27, 1;
+	mov.s32 	%r29, %r28;
+
+	// if iu
+	mov.u32		%r30, %regiu;
+	mov.u32 	%r31, 0;
+	setp.eq.s32 	%p1, %r30, %r31;
+
+	@%p1 bra 	$L_0_7426;
+	
+	
+	// if iu_dir == WEST 
+	mov.s32		%r32, %regiudir;
+	mov.s32 	%r33, 2;
+	setp.ne.s32 	%p2, %r32, %r33;
+	@%p2 bra 	$L_0_7682;
+
+
+	// r36 is A_start_row
+	mov.s32 	%r34, %regiuid;
+	mul.lo.s32 	%r35, %r34, 16;
+	mov.s32 	%r36, %r35;
+
+
+$L_0_7682:
+	mov.s32		%r37, %regiudir;
+	mov.s32 	%r38, 0;
+	setp.ne.s32 	%p3, %r37, %r38;
+	@%p3 bra 	$L_0_7938;
+	
+
+	// r14 is B_start_col
+	mov.s32 	%r39, %regiuid;
+	mul.lo.s32 	%r40, %r39, 16;
+	mov.s32 	%r41, %r40;
+
+
+$L_0_7938:
+	bra.uni 	$L_0_7170;
+
+
+$L_0_7426:
+	// if not iu
+	cvt.u32.u16 	%r42, %ctaid.y;
+	mul.lo.u32 	%r43, %r42, 16;
+	mov.s32 	%r36, %r43;
+	cvt.u32.u16 	%r44, %ctaid.x;
+	mul.lo.u32 	%r45, %r44, 16;
+	mov.s32 	%r41, %r45;
+	mov.f32 	%f1, 0f00000000;     	// 0
+	mov.u64 	%rd1, __cuda___cuda_local_var_28058_32_non_const_s_C40;
+	cvt.u32.u16 	%r46, %tid.x;
+	cvt.u64.u32 	%rd2, %r46;
+	cvt.u32.u16 	%r47, %tid.y;
+	cvt.u64.u32 	%rd3, %r47;
+	mul.wide.u32 	%rd4, %r47, 16;
+	add.u64 	%rd5, %rd2, %rd4;
+	mul.lo.u64 	%rd6, %rd5, 4;
+	add.u64 	%rd7, %rd1, %rd6;
+	st.shared.f32 	[%rd7+0], %f1;
+
+$L_0_7170:
+	// r49 is i
+	// r51 is time_step
+	mov.s32 	%r49, 0;
+	mov.s32 	%r51, 0;
+
+	// First for test
+	mov.s32 	%r52, %r51;
+
+	mov.s32 	%r53, %r24;
+	setp.ge.s32 	%p4, %r52, %r53;
+	@%p4 bra 	$L_0_8450;
+
+$L_0_8194:
+	// r56 is A_start_col
+	// r58 is B_start_row
+	//*********Inside external for loop
+	mul.lo.s32 	%r55, %r49, 16;
+	mov.s32 	%r56, %r55;
+	mov.s32 	%r58, %r56;
+
+	mov.u32     %r59, %regiu;
+	mov.u32 	%r60, 0;
+	setp.eq.s32 	%p5, %r59, %r60;
+	@%p5 bra 	$L_0_8962;
+
+
+	//**********iu IF computation block
+	mov.s32		%r61, %regiudir;
+	mov.s32 	%r62, 2;
+	setp.ne.s32 	%p6, %r61, %r62;
+	@%p6 bra 	$L_0_9218;
+
+
+	//******** iu-west computation block
+	mov.s32		%r63, %regiuid;
+	mov.s32 	%r64, %r51;
+	set.le.u32.s32 	%r65, %r63, %r64;
+
+	neg.s32 	%r66, %r65;
+	mov.s32 	%r67, %r49;
+	mov.s32 	%r68, %r17;
+	set.lt.u32.s32 	%r69, %r67, %r68;
+	neg.s32 	%r70, %r69;
+	and.b32 	%r71, %r66, %r70;
+	mov.u32 	%r72, 0;
+	setp.eq.s32 	%p7, %r71, %r72;
+	@%p7 bra 	$L_0_9474;
+
+
+	//**********iu-computation in west
+	ld.param.u64 	%rd8, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__A];
+	cvt.u32.u16 	%r73, %tid.x;
+	mov.s32 	%r74, %r56;
+	add.u32 	%r75, %r73, %r74;
+	ld.param.u32 	%r76, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__N];
+	mov.s32 	%r77, %r36;
+	cvt.u32.u16 	%r78, %tid.y;
+	add.u32 	%r79, %r77, %r78;
+	mul.lo.u32 	%r80, %r76, %r79;
+	add.u32 	%r81, %r75, %r80;
+	cvt.u64.u32 	%rd9, %r81;
+	mul.wide.u32 	%rd10, %r81, 4;
+	add.u64 	%rd11, %rd8, %rd10;
+	ld.global.f32 	%f2, [%rd11+0];
+	mov.u64 	%rd12, __cuda___cuda_local_var_28066_32_non_const_cb_A3112;
+	cvt.u32.u16 	%r82, %tid.x;
+	cvt.u64.u32 	%rd13, %r82;
+	cvt.u32.u16 	%r83, %tid.y;
+	cvt.u64.u32 	%rd14, %r83;
+	mul.wide.u32 	%rd15, %r83, 16;
+	add.u64 	%rd16, %rd13, %rd15;
+	mul.lo.u64 	%rd17, %rd16, 4;
+	add.u64 	%rd18, %rd12, %rd17;
+
+	// Store to cb (cb_A_east)
+	st.cbh.f32 	[%rd18+0], %f2;
+	mov.s32 	%r84, %r49;
+	add.s32 	%r85, %r84, 1;
+	mov.s32 	%r49, %r85;
+$L_0_9474:
+$L_0_9218:
+
+
+	mov.s32		%r86, %regiudir;
+	mov.s32 	%r87, 0;
+	setp.ne.s32 	%p8, %r86, %r87;
+	@%p8 bra 	$L_0_9730;
+
+	//******** iu-north computation block
+	mov.s32		%r88, %regiuid;
+	mov.s32 	%r89, %r51;
+	set.le.u32.s32 	%r90, %r88, %r89;
+	neg.s32 	%r91, %r90;
+	mov.s32 	%r92, %r49;
+	mov.s32 	%r93, %r17;
+	set.lt.u32.s32 	%r94, %r92, %r93;
+	neg.s32 	%r95, %r94;
+	and.b32 	%r96, %r91, %r95;
+	mov.u32 	%r97, 0;
+	setp.eq.s32 	%p9, %r96, %r97;
+	@%p9 bra 	$L_0_9986;
+
+
+	//**********iu-computation in north
+	ld.param.u64 	%rd19, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__B];
+	cvt.u32.u16 	%r98, %tid.x;
+	mov.s32 	%r99, %r41;
+	add.u32 	%r100, %r98, %r99;
+	ld.param.u32 	%r101, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__N];
+	mov.s32 	%r102, %r58;
+	cvt.u32.u16 	%r103, %tid.y;
+	add.u32 	%r104, %r102, %r103;
+	mul.lo.u32 	%r105, %r101, %r104;
+	add.u32 	%r106, %r100, %r105;
+	cvt.u64.u32 	%rd20, %r106;
+	mul.wide.u32 	%rd21, %r106, 4;
+	add.u64 	%rd22, %rd19, %rd21;
+	ld.global.f32 	%f3, [%rd22+0];
+	mov.u64 	%rd23, __cuda___cuda_local_var_28061_32_non_const_cb_B5160;
+	cvt.u32.u16 	%r107, %tid.x;
+	cvt.u64.u32 	%rd24, %r107;
+	cvt.u32.u16 	%r108, %tid.y;
+	cvt.u64.u32 	%rd25, %r108;
+	mul.wide.u32 	%rd26, %r108, 16;
+	add.u64 	%rd27, %rd24, %rd26;
+	mul.lo.u64 	%rd28, %rd27, 4;
+	add.u64 	%rd29, %rd23, %rd28;
+
+	// Store to cb (cb_B_south)
+	st.cbv.f32 	[%rd29+0], %f3;
+	mov.s32 	%r109, %r49;
+	add.s32 	%r110, %r109, 1;
+	mov.s32 	%r49, %r110;
+
+
+$L_0_9986:
+$L_0_9730:
+	bra.uni 	$L_0_8706;
+$L_0_8962:
+	//*********SM else block
+	mov.s32 	%r111, %r51;
+	mov.s32 	%r112, %r29;
+	set.ge.u32.s32 	%r113, %r111, %r112;
+	neg.s32 	%r114, %r113;
+	mov.s32 	%r115, %r49;
+	mov.s32 	%r116, %r17;
+	set.lt.u32.s32 	%r117, %r115, %r116;
+	neg.s32 	%r118, %r117;
+	and.b32 	%r119, %r114, %r118;
+	mov.u32 	%r120, 0;
+	setp.eq.s32 	%p10, %r119, %r120;
+	@%p10 bra 	$L_0_10242;
+
+
+	//**************SM time step condition block
+	mov.u64 	%rd30, __cuda___cuda_local_var_28066_32_non_const_cb_A3112;
+	cvt.u32.u16 	%r121, %tid.x;
+	cvt.u64.u32 	%rd31, %r121;
+	cvt.u32.u16 	%r122, %tid.y;
+	cvt.u64.u32 	%rd32, %r122;
+	mul.wide.u32 	%rd33, %r122, 16;
+	add.u64 	%rd34, %rd31, %rd33;
+	mul.lo.u64 	%rd35, %rd34, 4;
+	add.u64 	%rd36, %rd30, %rd35;
+
+	// Load from cb (cb_A_west)
+	ld.cbh.f32 	%f4, [%rd36+0];
+	mov.u64 	%rd37, __cuda___cuda_local_var_28056_32_non_const_s_A4136;
+	cvt.u32.u16 	%r123, %tid.x;
+	cvt.u64.u32 	%rd38, %r123;
+	cvt.u32.u16 	%r124, %tid.y;
+	cvt.u64.u32 	%rd39, %r124;
+	mul.wide.u32 	%rd40, %r124, 16;
+	add.u64 	%rd41, %rd38, %rd40;
+	mul.lo.u64 	%rd42, %rd41, 4;
+	add.u64 	%rd43, %rd37, %rd42;
+	st.shared.f32 	[%rd43+0], %f4;
+	mov.u64 	%rd44, __cuda___cuda_local_var_28061_32_non_const_cb_B5160;
+	cvt.u32.u16 	%r125, %tid.x;
+	cvt.u64.u32 	%rd45, %r125;
+	cvt.u32.u16 	%r126, %tid.y;
+	cvt.u64.u32 	%rd46, %r126;
+	mul.wide.u32 	%rd47, %r126, 16;
+	add.u64 	%rd48, %rd45, %rd47;
+	mul.lo.u64 	%rd49, %rd48, 4;
+	add.u64 	%rd50, %rd44, %rd49;
+
+	// Load from cb (cb_B_north)
+	ld.cbv.f32 	%f5, [%rd50+0];
+	mov.u64 	%rd51, __cuda___cuda_local_var_28057_32_non_const_s_B6184;
+	cvt.u32.u16 	%r127, %tid.x;
+	cvt.u64.u32 	%rd52, %r127;
+	cvt.u32.u16 	%r128, %tid.y;
+	cvt.u64.u32 	%rd53, %r128;
+	mul.wide.u32 	%rd54, %r128, 16;
+	add.u64 	%rd55, %rd52, %rd54;
+	mul.lo.u64 	%rd56, %rd55, 4;
+	add.u64 	%rd57, %rd51, %rd56;
+	st.shared.f32 	[%rd57+0], %f5;
+
+
+	bar.sync 	0;
+	mov.s32 	%r129, 0;
+	mov.s32 	%r130, %r129;
+	mov.s32 	%r131, %r130;
+	mov.u32 	%r132, 15;
+	setp.gt.s32 	%p11, %r131, %r132;
+	@%p11 bra 	$L_0_10754;
+$L_0_10498:
+	//*********Inside internal for loop
+	mov.u64 	%rd58, __cuda___cuda_local_var_28058_32_non_const_s_C40;
+	cvt.u32.u16 	%r133, %tid.x;
+	cvt.u64.u32 	%rd59, %r133;
+	cvt.u32.u16 	%r134, %tid.y;
+	cvt.u64.u32 	%rd60, %r134;
+	mul.wide.u32 	%rd61, %r134, 16;
+	add.u64 	%rd62, %rd59, %rd61;
+	mul.lo.u64 	%rd63, %rd62, 4;
+	add.u64 	%rd64, %rd58, %rd63;
+	ld.shared.f32 	%f6, [%rd64+0];
+	mov.u64 	%rd65, __cuda___cuda_local_var_28056_32_non_const_s_A4136;
+	mov.s32 	%r135, %r130;
+	cvt.s64.s32 	%rd66, %r135;
+	cvt.u32.u16 	%r136, %tid.y;
+	cvt.u64.u32 	%rd67, %r136;
+	mul.wide.u32 	%rd68, %r136, 16;
+	add.u64 	%rd69, %rd66, %rd68;
+	mul.lo.u64 	%rd70, %rd69, 4;
+	add.u64 	%rd71, %rd65, %rd70;
+	ld.shared.f32 	%f7, [%rd71+0];
+	mov.u64 	%rd72, __cuda___cuda_local_var_28057_32_non_const_s_B6184;
+	cvt.u32.u16 	%r137, %tid.x;
+	cvt.u64.u32 	%rd73, %r137;
+	mov.s32 	%r138, %r130;
+	cvt.s64.s32 	%rd74, %r138;
+	mul.wide.s32 	%rd75, %r138, 16;
+	add.u64 	%rd76, %rd73, %rd75;
+	mul.lo.u64 	%rd77, %rd76, 4;
+	add.u64 	%rd78, %rd72, %rd77;
+	ld.shared.f32 	%f8, [%rd78+0];
+	mad.f32 	%f9, %f7, %f8, %f6;
+	mov.u64 	%rd79, __cuda___cuda_local_var_28058_32_non_const_s_C40;
+	cvt.u32.u16 	%r139, %tid.x;
+	cvt.u64.u32 	%rd80, %r139;
+	cvt.u32.u16 	%r140, %tid.y;
+	cvt.u64.u32 	%rd81, %r140;
+	mul.wide.u32 	%rd82, %r140, 16;
+	add.u64 	%rd83, %rd80, %rd82;
+	mul.lo.u64 	%rd84, %rd83, 4;
+	add.u64 	%rd85, %rd79, %rd84;
+	st.shared.f32 	[%rd85+0], %f9;
+	mov.s32 	%r141, %r130;
+	add.s32 	%r142, %r141, 1;
+	mov.s32 	%r130, %r142;
+	mov.s32 	%r143, %r130;
+	mov.u32 	%r144, 15;
+	setp.le.s32 	%p12, %r143, %r144;
+	@%p12 bra 	$L_0_10498;
+$L_0_10754:
+	bar.sync 	0;
+
+
+	//**************SM copy to CBs
+	mov.u64 	%rd86, __cuda___cuda_local_var_28056_32_non_const_s_A4136;
+	cvt.u32.u16 	%r145, %tid.x;
+	cvt.u64.u32 	%rd87, %r145;
+	cvt.u32.u16 	%r146, %tid.y;
+	cvt.u64.u32 	%rd88, %r146;
+	mul.wide.u32 	%rd89, %r146, 16;
+	add.u64 	%rd90, %rd87, %rd89;
+	mul.lo.u64 	%rd91, %rd90, 4;
+	add.u64 	%rd92, %rd86, %rd91;
+	ld.shared.f32 	%f10, [%rd92+0];
+	mov.u64 	%rd93, __cuda___cuda_local_var_28066_32_non_const_cb_A3112;
+	cvt.u32.u16 	%r147, %tid.x;
+	cvt.u64.u32 	%rd94, %r147;
+	cvt.u32.u16 	%r148, %tid.y;
+	cvt.u64.u32 	%rd95, %r148;
+	mul.wide.u32 	%rd96, %r148, 16;
+	add.u64 	%rd97, %rd94, %rd96;
+	mul.lo.u64 	%rd98, %rd97, 4;
+	add.u64 	%rd99, %rd93, %rd98;
+
+	// Store to cb (cb_A_east)
+	st.cbh.f32 	[%rd99+0], %f10;
+	mov.u64 	%rd100, __cuda___cuda_local_var_28057_32_non_const_s_B6184;
+	cvt.u32.u16 	%r149, %tid.x;
+	cvt.u64.u32 	%rd101, %r149;
+	cvt.u32.u16 	%r150, %tid.y;
+	cvt.u64.u32 	%rd102, %r150;
+	mul.wide.u32 	%rd103, %r150, 16;
+	add.u64 	%rd104, %rd101, %rd103;
+	mul.lo.u64 	%rd105, %rd104, 4;
+	add.u64 	%rd106, %rd100, %rd105;
+	ld.shared.f32 	%f11, [%rd106+0];
+	mov.u64 	%rd107, __cuda___cuda_local_var_28061_32_non_const_cb_B5160;
+	cvt.u32.u16 	%r151, %tid.x;
+	cvt.u64.u32 	%rd108, %r151;
+	cvt.u32.u16 	%r152, %tid.y;
+	cvt.u64.u32 	%rd109, %r152;
+	mul.wide.u32 	%rd110, %r152, 16;
+	add.u64 	%rd111, %rd108, %rd110;
+	mul.lo.u64 	%rd112, %rd111, 4;
+	add.u64 	%rd113, %rd107, %rd112;
+
+	// Store to cb (cb_B_south)
+	st.cbv.f32 	[%rd113+0], %f11;
+	mov.s32 	%r153, %r49;
+	add.s32 	%r154, %r153, 1;
+	mov.s32 	%r49, %r154;
+$L_0_10242:
+$L_0_8706:
+
+
+
+
+	// Block sync
+
+	bar.blocksync	0;
+
+
+	mov.s32 	%r155, %r51;
+	add.s32 	%r156, %r155, 1;
+	mov.s32 	%r51, %r156;
+	mov.s32 	%r157, %r51;
+	mov.s32 	%r158, %r24;
+	setp.lt.s32 	%p13, %r157, %r158;
+	@%p13 bra 	$L_0_8194;
+
+
+$L_0_8450:
+	mov.u32		%r159, %regiu;
+	mov.u32 	%r160, 0;
+	setp.ne.s32 	%p14, %r159, %r160;
+	@%p14 bra 	$L_0_6658;
+
+
+	//***********SMs copy result to global mem
+	mov.u64 	%rd114, __cuda___cuda_local_var_28058_32_non_const_s_C40;
+	cvt.u32.u16 	%r161, %tid.x;
+	cvt.u64.u32 	%rd115, %r161;
+	cvt.u32.u16 	%r162, %tid.y;
+	cvt.u64.u32 	%rd116, %r162;
+	mul.wide.u32 	%rd117, %r162, 16;
+	add.u64 	%rd118, %rd115, %rd117;
+	mul.lo.u64 	%rd119, %rd118, 4;
+	add.u64 	%rd120, %rd114, %rd119;
+	ld.shared.f32 	%f12, [%rd120+0];
+	ld.param.u64 	%rd121, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__C];
+	cvt.u32.u16 	%r163, %tid.x;
+	mov.s32 	%r164, %r41;
+	add.u32 	%r165, %r163, %r164;
+	ld.param.u32 	%r166, [__cudaparm__Z11matMultiplyPfS_S_iiPiS__N];
+	mov.s32 	%r167, %r36;
+	cvt.u32.u16 	%r168, %tid.y;
+	add.u32 	%r169, %r167, %r168;
+	mul.lo.u32 	%r170, %r166, %r169;
+	add.u32 	%r171, %r165, %r170;
+	cvt.u64.u32 	%rd122, %r171;
+	mul.wide.u32 	%rd123, %r171, 4;
+	add.u64 	%rd124, %rd121, %rd123;
+	st.global.f32 	[%rd124+0], %f12;
+
+$L_0_6658:
+	exit;
+	
+$LDWend__Z11matMultiplyPfS_S_iiPiS_:
+	} // _Z11matMultiplyPfS_S_iiPiS_
+

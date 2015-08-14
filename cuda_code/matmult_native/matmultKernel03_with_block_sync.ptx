@@ -1,0 +1,327 @@
+	.version 1.4
+	.target sm_10, map_f64_to_f32
+	// compiled with /home/yohann/Documents/export_yo/cuda4/open64/lib//be
+	// nvopencc 4.1 built on 2012-04-05
+
+	//-----------------------------------------------------------
+	// Compiling /tmp/tmpxft_00000f24_00000000-9_matmultKernel03.cpp3.i (/tmp/ccBI#.sS9R5U)
+	//-----------------------------------------------------------
+
+	//-----------------------------------------------------------
+	// Options:
+	//-----------------------------------------------------------
+	//  Target:ptx, ISA:sm_10, Endian:little, Pointer Size:64
+	//  -O0	(Optimization level)
+	//  -g0	(Debug level)
+	//  -m2	(Report advisories)
+	//-----------------------------------------------------------
+
+	.file	1	"<command-line>"
+	.file	2	"/tmp/tmpxft_00000f24_00000000-8_matmultKernel03.cudafe2.gpu"
+	.file	3	"/home/yohann/Documents/export_yo/gcc-4.6.3/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.6.3/include/stddef.h"
+	.file	4	"/home/yohann/Documents/export_yo/cuda4/bin/../include/crt/device_runtime.h"
+	.file	5	"/home/yohann/Documents/export_yo/cuda4/bin/../include/host_defines.h"
+	.file	6	"/home/yohann/Documents/export_yo/cuda4/bin/../include/builtin_types.h"
+	.file	7	"/home/yohann/Documents/export_yo/cuda4/bin/../include/device_types.h"
+	.file	8	"/home/yohann/Documents/export_yo/cuda4/bin/../include/driver_types.h"
+	.file	9	"/home/yohann/Documents/export_yo/cuda4/bin/../include/surface_types.h"
+	.file	10	"/home/yohann/Documents/export_yo/cuda4/bin/../include/texture_types.h"
+	.file	11	"/home/yohann/Documents/export_yo/cuda4/bin/../include/vector_types.h"
+	.file	12	"/home/yohann/Documents/export_yo/cuda4/bin/../include/device_launch_parameters.h"
+	.file	13	"/home/yohann/Documents/export_yo/cuda4/bin/../include/crt/storage_class.h"
+	.file	14	"matmultKernel03.cu"
+	.file	15	"/home/yohann/Documents/export_yo/cuda4/bin/../include/common_functions.h"
+	.file	16	"/home/yohann/Documents/export_yo/cuda4/bin/../include/math_functions.h"
+	.file	17	"/home/yohann/Documents/export_yo/cuda4/bin/../include/math_constants.h"
+	.file	18	"/home/yohann/Documents/export_yo/cuda4/bin/../include/device_functions.h"
+	.file	19	"/home/yohann/Documents/export_yo/cuda4/bin/../include/sm_11_atomic_functions.h"
+	.file	20	"/home/yohann/Documents/export_yo/cuda4/bin/../include/sm_12_atomic_functions.h"
+	.file	21	"/home/yohann/Documents/export_yo/cuda4/bin/../include/sm_13_double_functions.h"
+	.file	22	"/home/yohann/Documents/export_yo/cuda4/bin/../include/sm_20_atomic_functions.h"
+	.file	23	"/home/yohann/Documents/export_yo/cuda4/bin/../include/sm_20_intrinsics.h"
+	.file	24	"/home/yohann/Documents/export_yo/cuda4/bin/../include/sm_30_intrinsics.h"
+	.file	25	"/home/yohann/Documents/export_yo/cuda4/bin/../include/surface_functions.h"
+	.file	26	"/home/yohann/Documents/export_yo/cuda4/bin/../include/texture_fetch_functions.h"
+	.file	27	"/home/yohann/Documents/export_yo/cuda4/bin/../include/math_functions_dbl_ptx1.h"
+
+
+	.entry _Z11matMultiplyPfS_S_iiPi (
+		.param .u64 __cudaparm__Z11matMultiplyPfS_S_iiPi_A,
+		.param .u64 __cudaparm__Z11matMultiplyPfS_S_iiPi_B,
+		.param .u64 __cudaparm__Z11matMultiplyPfS_S_iiPi_C,
+		.param .s32 __cudaparm__Z11matMultiplyPfS_S_iiPi_N,
+		.param .s32 __cudaparm__Z11matMultiplyPfS_S_iiPi_b,
+		.param .u64 __cudaparm__Z11matMultiplyPfS_S_iiPi_blk_start)
+	{
+	.reg .u32 %r<125>;
+	.reg .u64 %rd<74>;
+	.reg .f32 %f<10>;
+	.reg .pred %p<8>;
+	.shared .align 4 .b8 __cuda___cuda_local_var_14480_35_non_const_s_C40[1024];
+	.shared .align 4 .b8 __cuda___cuda_local_var_14478_35_non_const_s_A1064[1024];
+	.shared .align 4 .b8 __cuda___cuda_local_var_14479_35_non_const_s_B2088[1024];
+	.loc	14	8	0
+$LDWbegin__Z11matMultiplyPfS_S_iiPi:
+	.loc	14	17	0
+	ld.param.s32 	%r1, [__cudaparm__Z11matMultiplyPfS_S_iiPi_N];
+	shr.s32 	%r2, %r1, 31;
+	mov.s32 	%r3, 15;
+	and.b32 	%r4, %r2, %r3;
+	add.s32 	%r5, %r4, %r1;
+	shr.s32 	%r6, %r5, 4;
+	mov.s32 	%r7, %r6;
+	.loc	14	18	0
+	mov.s32 	%r8, %r7;
+	cvt.u32.u16 	%r9, %nctaid.x;
+	cvt.u32.u16 	%r10, %nctaid.y;
+	add.u32 	%r11, %r9, %r10;
+	add.u32 	%r12, %r8, %r11;
+	sub.u32 	%r13, %r12, 2;
+	mov.s32 	%r14, %r13;
+	.loc	14	19	0
+	cvt.u32.u16 	%r15, %ctaid.x;
+	cvt.u32.u16 	%r16, %ctaid.y;
+	add.u32 	%r17, %r15, %r16;
+	mov.s32 	%r18, %r17;
+	.loc	14	20	0
+	cvt.u32.u16 	%r19, %ctaid.x;
+	cvt.u32.u16 	%r20, %nctaid.x;
+	cvt.u32.u16 	%r21, %ctaid.y;
+	mul.lo.u32 	%r22, %r20, %r21;
+	add.u32 	%r23, %r19, %r22;
+	mov.s32 	%r24, %r23;
+	.loc	14	26	0
+	mov.f32 	%f1, 0f00000000;     	// 0
+	mov.u64 	%rd1, __cuda___cuda_local_var_14480_35_non_const_s_C40;
+	cvt.u32.u16 	%r25, %tid.x;
+	cvt.u64.u32 	%rd2, %r25;
+	cvt.u32.u16 	%r26, %tid.y;
+	cvt.u64.u32 	%rd3, %r26;
+	mul.wide.u32 	%rd4, %r26, 16;
+	add.u64 	%rd5, %rd2, %rd4;
+	mul.lo.u64 	%rd6, %rd5, 4;
+	add.u64 	%rd7, %rd1, %rd6;
+	st.shared.f32 	[%rd7+0], %f1;
+	.loc	14	28	0
+	cvt.u32.u16 	%r27, %ctaid.y;
+	mul.lo.u32 	%r28, %r27, 16;
+	mov.s32 	%r29, %r28;
+	.loc	14	29	0
+	cvt.u32.u16 	%r30, %ctaid.x;
+	mul.lo.u32 	%r31, %r30, 16;
+	mov.s32 	%r32, %r31;
+	.loc	14	31	0
+	mov.s32 	%r33, 0;
+	mov.s32 	%r34, %r33;
+	.loc	14	33	0
+	mov.s32 	%r35, 0;
+	mov.s32 	%r36, %r35;
+	mov.s32 	%r37, %r36;
+	mov.s32 	%r38, %r14;
+	setp.ge.s32 	%p1, %r37, %r38;
+	@%p1 bra 	$L_0_3074;
+$L_0_2818:
+	.loc	14	35	0
+	mov.s32 	%r39, %r36;
+	mov.s32 	%r40, %r18;
+	set.ge.u32.s32 	%r41, %r39, %r40;
+	neg.s32 	%r42, %r41;
+	mov.s32 	%r43, %r34;
+	mov.s32 	%r44, %r7;
+	set.lt.u32.s32 	%r45, %r43, %r44;
+	neg.s32 	%r46, %r45;
+	and.b32 	%r47, %r42, %r46;
+	mov.u32 	%r48, 0;
+	setp.eq.s32 	%p2, %r47, %r48;
+	@%p2 bra 	$L_0_3330;
+	.loc	14	39	0
+	mov.s32 	%r49, %r34;
+	mov.s32 	%r50, 0;
+	set.eq.u32.s32 	%r51, %r49, %r50;
+	neg.s32 	%r52, %r51;
+	cvt.u32.u16 	%r53, %tid.x;
+	cvt.u32.u16 	%r54, %ntid.x;
+	cvt.u32.u16 	%r55, %tid.y;
+	mul.lo.u32 	%r56, %r54, %r55;
+	add.u32 	%r57, %r53, %r56;
+	mov.u32 	%r58, 0;
+	set.eq.u32.u32 	%r59, %r57, %r58;
+	neg.s32 	%r60, %r59;
+	and.b32 	%r61, %r52, %r60;
+	mov.u32 	%r62, 0;
+	setp.eq.s32 	%p3, %r61, %r62;
+	@%p3 bra 	$L_0_3586;
+	.loc	14	40	0
+	mov.s32 	%r63, %r36;
+	ld.param.u64 	%rd8, [__cudaparm__Z11matMultiplyPfS_S_iiPi_blk_start];
+	cvt.s64.s32 	%rd9, %r24;
+	mul.wide.s32 	%rd10, %r24, 4;
+	add.u64 	%rd11, %rd8, %rd10;
+	st.global.s32 	[%rd11+0], %r63;
+$L_0_3586:
+	.loc	14	42	0
+	mov.s32 	%r64, %r34;
+	mul.lo.s32 	%r65, %r64, 16;
+	mov.s32 	%r66, %r65;
+	.loc	14	43	0
+	mov.s32 	%r67, %r66;
+	mov.s32 	%r68, %r67;
+	.loc	14	46	0
+	ld.param.u64 	%rd12, [__cudaparm__Z11matMultiplyPfS_S_iiPi_A];
+	mov.s32 	%r69, %r66;
+	cvt.u32.u16 	%r70, %tid.x;
+	add.u32 	%r71, %r69, %r70;
+	ld.param.u32 	%r72, [__cudaparm__Z11matMultiplyPfS_S_iiPi_N];
+	mov.s32 	%r73, %r29;
+	cvt.u32.u16 	%r74, %tid.y;
+	add.u32 	%r75, %r73, %r74;
+	mul.lo.u32 	%r76, %r72, %r75;
+	add.u32 	%r77, %r71, %r76;
+	cvt.u64.u32 	%rd13, %r77;
+	mul.wide.u32 	%rd14, %r77, 4;
+	add.u64 	%rd15, %rd12, %rd14;
+	ld.global.f32 	%f2, [%rd15+0];
+	mov.u64 	%rd16, __cuda___cuda_local_var_14478_35_non_const_s_A1064;
+	cvt.u32.u16 	%r78, %tid.x;
+	cvt.u64.u32 	%rd17, %r78;
+	cvt.u32.u16 	%r79, %tid.y;
+	cvt.u64.u32 	%rd18, %r79;
+	mul.wide.u32 	%rd19, %r79, 16;
+	add.u64 	%rd20, %rd17, %rd19;
+	mul.lo.u64 	%rd21, %rd20, 4;
+	add.u64 	%rd22, %rd16, %rd21;
+	st.shared.f32 	[%rd22+0], %f2;
+	.loc	14	50	0
+	ld.param.u64 	%rd23, [__cudaparm__Z11matMultiplyPfS_S_iiPi_B];
+	cvt.u32.u16 	%r80, %tid.x;
+	mov.s32 	%r81, %r32;
+	add.u32 	%r82, %r80, %r81;
+	ld.param.u32 	%r83, [__cudaparm__Z11matMultiplyPfS_S_iiPi_N];
+	mov.s32 	%r84, %r68;
+	cvt.u32.u16 	%r85, %tid.y;
+	add.u32 	%r86, %r84, %r85;
+	mul.lo.u32 	%r87, %r83, %r86;
+	add.u32 	%r88, %r82, %r87;
+	cvt.u64.u32 	%rd24, %r88;
+	mul.wide.u32 	%rd25, %r88, 4;
+	add.u64 	%rd26, %rd23, %rd25;
+	ld.global.f32 	%f3, [%rd26+0];
+	mov.u64 	%rd27, __cuda___cuda_local_var_14479_35_non_const_s_B2088;
+	cvt.u32.u16 	%r89, %tid.x;
+	cvt.u64.u32 	%rd28, %r89;
+	cvt.u32.u16 	%r90, %tid.y;
+	cvt.u64.u32 	%rd29, %r90;
+	mul.wide.u32 	%rd30, %r90, 16;
+	add.u64 	%rd31, %rd28, %rd30;
+	mul.lo.u64 	%rd32, %rd31, 4;
+	add.u64 	%rd33, %rd27, %rd32;
+	st.shared.f32 	[%rd33+0], %f3;
+	.loc	14	53	0
+	bar.sync 	0;
+	.loc	14	57	0
+	mov.s32 	%r91, 0;
+	mov.s32 	%r92, %r91;
+	mov.s32 	%r93, %r92;
+	mov.u32 	%r94, 15;
+	setp.gt.s32 	%p4, %r93, %r94;
+	@%p4 bra 	$L_0_4098;
+$L_0_3842:
+	.loc	14	59	0
+	mov.u64 	%rd34, __cuda___cuda_local_var_14480_35_non_const_s_C40;
+	cvt.u32.u16 	%r95, %tid.x;
+	cvt.u64.u32 	%rd35, %r95;
+	cvt.u32.u16 	%r96, %tid.y;
+	cvt.u64.u32 	%rd36, %r96;
+	mul.wide.u32 	%rd37, %r96, 16;
+	add.u64 	%rd38, %rd35, %rd37;
+	mul.lo.u64 	%rd39, %rd38, 4;
+	add.u64 	%rd40, %rd34, %rd39;
+	ld.shared.f32 	%f4, [%rd40+0];
+	mov.u64 	%rd41, __cuda___cuda_local_var_14478_35_non_const_s_A1064;
+	mov.s32 	%r97, %r92;
+	cvt.s64.s32 	%rd42, %r97;
+	cvt.u32.u16 	%r98, %tid.y;
+	cvt.u64.u32 	%rd43, %r98;
+	mul.wide.u32 	%rd44, %r98, 16;
+	add.u64 	%rd45, %rd42, %rd44;
+	mul.lo.u64 	%rd46, %rd45, 4;
+	add.u64 	%rd47, %rd41, %rd46;
+	ld.shared.f32 	%f5, [%rd47+0];
+	mov.u64 	%rd48, __cuda___cuda_local_var_14479_35_non_const_s_B2088;
+	cvt.u32.u16 	%r99, %tid.x;
+	cvt.u64.u32 	%rd49, %r99;
+	mov.s32 	%r100, %r92;
+	cvt.s64.s32 	%rd50, %r100;
+	mul.wide.s32 	%rd51, %r100, 16;
+	add.u64 	%rd52, %rd49, %rd51;
+	mul.lo.u64 	%rd53, %rd52, 4;
+	add.u64 	%rd54, %rd48, %rd53;
+	ld.shared.f32 	%f6, [%rd54+0];
+	mad.f32 	%f7, %f5, %f6, %f4;
+	mov.u64 	%rd55, __cuda___cuda_local_var_14480_35_non_const_s_C40;
+	cvt.u32.u16 	%r101, %tid.x;
+	cvt.u64.u32 	%rd56, %r101;
+	cvt.u32.u16 	%r102, %tid.y;
+	cvt.u64.u32 	%rd57, %r102;
+	mul.wide.u32 	%rd58, %r102, 16;
+	add.u64 	%rd59, %rd56, %rd58;
+	mul.lo.u64 	%rd60, %rd59, 4;
+	add.u64 	%rd61, %rd55, %rd60;
+	st.shared.f32 	[%rd61+0], %f7;
+	.loc	14	57	0
+	mov.s32 	%r103, %r92;
+	add.s32 	%r104, %r103, 1;
+	mov.s32 	%r92, %r104;
+	mov.s32 	%r105, %r92;
+	mov.u32 	%r106, 15;
+	setp.le.s32 	%p5, %r105, %r106;
+	@%p5 bra 	$L_0_3842;
+$L_0_4098:
+	.loc	14	63	0
+	bar.sync 	0;
+	.loc	14	65	0
+	mov.s32 	%r107, %r34;
+	add.s32 	%r108, %r107, 1;
+	mov.s32 	%r34, %r108;
+$L_0_3330:
+	.loc	14	67	0
+	bar.blocksync	0;
+	.loc	14	33	0
+	mov.s32 	%r109, %r36;
+	add.s32 	%r110, %r109, 1;
+	mov.s32 	%r36, %r110;
+	mov.s32 	%r111, %r36;
+	mov.s32 	%r112, %r14;
+	setp.lt.s32 	%p6, %r111, %r112;
+	@%p6 bra 	$L_0_2818;
+$L_0_3074:
+	.loc	14	72	0
+	mov.u64 	%rd62, __cuda___cuda_local_var_14480_35_non_const_s_C40;
+	cvt.u32.u16 	%r113, %tid.x;
+	cvt.u64.u32 	%rd63, %r113;
+	cvt.u32.u16 	%r114, %tid.y;
+	cvt.u64.u32 	%rd64, %r114;
+	mul.wide.u32 	%rd65, %r114, 16;
+	add.u64 	%rd66, %rd63, %rd65;
+	mul.lo.u64 	%rd67, %rd66, 4;
+	add.u64 	%rd68, %rd62, %rd67;
+	ld.shared.f32 	%f8, [%rd68+0];
+	ld.param.u64 	%rd69, [__cudaparm__Z11matMultiplyPfS_S_iiPi_C];
+	cvt.u32.u16 	%r115, %tid.x;
+	mov.s32 	%r116, %r32;
+	add.u32 	%r117, %r115, %r116;
+	ld.param.u32 	%r118, [__cudaparm__Z11matMultiplyPfS_S_iiPi_N];
+	mov.s32 	%r119, %r29;
+	cvt.u32.u16 	%r120, %tid.y;
+	add.u32 	%r121, %r119, %r120;
+	mul.lo.u32 	%r122, %r118, %r121;
+	add.u32 	%r123, %r117, %r122;
+	cvt.u64.u32 	%rd70, %r123;
+	mul.wide.u32 	%rd71, %r123, 4;
+	add.u64 	%rd72, %rd69, %rd71;
+	st.global.f32 	[%rd72+0], %f8;
+	.loc	14	74	0
+	exit;
+$LDWend__Z11matMultiplyPfS_S_iiPi:
+	} // _Z11matMultiplyPfS_S_iiPi
+
